@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Juego Matemático</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px; }
+    .pregunta { margin: 20px 0; }
+    input { font-size: 18px; width: 60px; text-align: center; }
+    #resultadoFinal { margin-top: 30px; font-weight: bold; }
+    button { margin-top: 20px; font-size: 18px; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+
+  <h2>Resolvé estas 10 operaciones</h2>
+  <form id="formulario">
+    <div id="contenedorPreguntas"></div>
+    <button type="submit">Finalizar</button>
+  </form>
+
+  <div id="resultadoFinal"></div>
+
+  <script>
+    const contenedor = document.getElementById("contenedorPreguntas");
+    const operaciones = [];
+    const operadores = ["+", "-", "×"];
+
+    function generarOperacion() {
+      const a = Math.floor(Math.random() * 10);
+      const b = Math.floor(Math.random() * 10);
+      const op = operadores[Math.floor(Math.random() * operadores.length)];
+      let resultado;
+      switch(op) {
+        case "+": resultado = a + b; break;
+        case "-": resultado = a - b; break;
+        case "×": resultado = a * b; break;
+      }
+      return { texto: `${a} ${op} ${b}`, resultado };
+    }
+
+    for (let i = 0; i < 10; i++) {
+      const op = generarOperacion();
+      operaciones.push(op);
+      contenedor.innerHTML += `
+        <div class="pregunta">
+          ${i+1}) ${op.texto} = 
+          <input type="number" id="respuesta${i}" required>
+        </div>`;
+    }
+
+    document.getElementById("formulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let correctas = 0;
+      operaciones.forEach((op, i) => {
+        const valor = parseInt(document.getElementById(`respuesta${i}`).value);
+        if (valor === op.resultado) correctas++;
+      });
+      document.getElementById("resultadoFinal").textContent =
+        `✅ Completado. Acertaste ${correctas} de 10. ¡Gracias, ahora podés continuar!`;
+      document.getElementById("formulario").style.display = "none";
+    });
+  </script>
+</body>
+</html>
