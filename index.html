@@ -56,9 +56,13 @@
         const valor = parseInt(document.getElementById(`respuesta${i}`).value);
         if (valor === op.resultado) correctas++;
       });
+
       document.getElementById("resultadoFinal").textContent =
         `✅ Completado. Acertaste ${correctas} de 10. ¡Gracias, ahora podés continuar!`;
       document.getElementById("formulario").style.display = "none";
+
+      // 🔁 Avisar a Qualtrics
+      window.parent.postMessage({ juegoMatematicoCompletado: true }, "*");
     });
   </script>
 </body>
